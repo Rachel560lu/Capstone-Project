@@ -1,2 +1,2 @@
-# DSS5105-Capstone-Project
+#Capstone-Project
 README
