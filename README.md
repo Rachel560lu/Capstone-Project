@@ -17,20 +17,21 @@ Architecture
 - Layout Planning: A Vision-Language Model (VLM) proposes a furniture layout aligned with the room’s geometry and user preferences.
 - Draft Visualization: Using OpenCV, the system generates a draft image with initial furniture placements over the empty-room background.
 
-3) Realistic Interior Rendering (Structure- and Style-Guided)
-- Preprocessing: Unify resolution and color balance.
+3) Room Rendering (Structure- and Style-Guided)
+- Entry point: `stage3_room rendering/furnishing.py` orchestrates ControlNet-guided Stable Diffusion inpainting.
+- Preprocessing: Unify resolution and color balance across the empty-room and drafted furniture images.
 - Structure Extraction: Apply Canny edge detection to create an edge map that captures room geometry.
 - Structure Conditioning: ControlNet consumes the edge map to guide Stable Diffusion, ensuring strict adherence to the original room layout while following text prompts for target style.
-- Output: A photorealistic rendering of the redesigned room with the desired aesthetic and preserved layout.
+- Output: A photorealistic rendering of the redesigned room with the desired aesthetic and preserved layout, plus optional edge maps and harmonized variants.
 
 Repository Structure
-- stage1/ — Furniture removal MVP (notebooks and samples)
-- stage2/VirtualFurnishing/ — Furniture selection, layout planning, and draft visualization
+- stage1_clutter removal/ — Clutter removal MVP (segmentation + inpainting scripts)
+- stage2_furniture selection/VirtualFurnishing/ — Furniture selection, layout planning, and draft visualization
   - data/ — Example inputs and metadata (e.g., model info JSONs, sample room image)
   - furniture_select/ — Selection notebooks and intermediate artifacts
   - inputs/ — User/config inputs (e.g., room.jpg, furniture.json)
   - layout_from_demo.py, layout_test.py — Layout and visualization entry points
-- stag3/ — Rendering pipeline components (e.g., ControlNet/SD integration) [placeholder]
+- stage3_room rendering/ — Rendering pipeline with ControlNet + Stable Diffusion (`furnishing.py`, sample data)
 - front_end/ — (Optional) UI or integration layer [if applicable]
 
 Getting Started
@@ -50,11 +51,10 @@ Installation
    source .venv/bin/activate  # Windows: .venv\\Scripts\\activate
 
 3) Install dependencies for Stage 2 (as a baseline)
-   pip install -r stage2/VirtualFurnishing/requirements.txt
+   pip install -r "stage2_furniture selection/VirtualFurnishing/requirements.txt"
 
 Usage
 Stage 1 — Furniture Removal
-
 Stage 2 — Furniture Selection and Layout Planning
 Stage 3 — Realistic Rendering with Structure Guidance
 Data and Models
