@@ -1,0 +1,32 @@
+[
+  {
+    "model_id":"b8b746a5-bf6e-4679-a702-e783140cc4d8",
+    "super-category":"Sofa",
+    "category":"L-shaped Sofa",
+    "style":"Modern",
+    "price_cny":4660,
+    "xLen":2.087,
+    "zLen":0.961,
+    "footprint_m2":2.005607
+  },
+  {
+    "model_id":"06791438-cfa8-4e29-95cc-4ff8107e3456",
+    "super-category":"Cabinet\/Shelf\/Desk",
+    "category":"Coffee Table",
+    "style":"Modern",
+    "price_cny":200,
+    "xLen":1.08,
+    "zLen":0.174,
+    "footprint_m2":0.18792
+  },
+  {
+    "model_id":"adc5fb68-cf1e-4017-aead-49ba64734db9",
+    "super-category":"Cabinet\/Shelf\/Desk",
+    "category":"Bookcase \/ jewelry Armoire",
+    "style":"Modern",
+    "price_cny":850,
+    "xLen":1.672,
+    "zLen":1.672,
+    "footprint_m2":2.795584
+  }
+]

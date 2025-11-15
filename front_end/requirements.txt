@@ -1,0 +1,23 @@
+# Web 框架
+fastapi
+uvicorn[standard]
+python-multipart
+
+# 消息队列
+redis
+
+# 图像处理
+pillow
+opencv-python
+numpy==1.24.3
+
+# AI 模型
+torch
+torchvision
+diffusers
+transformers
+accelerate
+
+# 可选：如果需要保留 Flask 作为备用
+# flask
+# flask-cors

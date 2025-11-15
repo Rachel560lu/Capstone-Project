@@ -1,0 +1,21 @@
+[
+    {
+      "id": "sku-001",
+      "category": "sofa",
+      "real_dimensions": "2.0m x 0.9m",
+      "trigger_word": "sofa"
+    },
+    {
+      "id": "sku-002",
+      "category": "coffee_table",
+      "real_dimensions": "1.0m x 0.5m",
+      "trigger_word": "table"
+    },
+    {
+      "id": "sku-003",
+      "category": "tv_stand",
+      "real_dimensions": "1.5m x 0.4m",
+      "trigger_word": "tv stand"
+    }
+  ]
+  

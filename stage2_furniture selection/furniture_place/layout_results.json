@@ -1,0 +1,67 @@
+[
+  {
+    "furniture_name": "L-shaped Sofa",
+    "position": {
+      "x": 0.25,
+      "y": 0.75
+    },
+    "rotation": {
+      "azimuth_deg": 90.0,
+      "elevation_deg": 0.0
+    },
+    "scale": 1.0,
+    "confidence": 0.95
+  },
+  {
+    "furniture_name": "Coffee Table",
+    "position": {
+      "x": 0.25,
+      "y": 0.5
+    },
+    "rotation": {
+      "azimuth_deg": 0.0,
+      "elevation_deg": 0.0
+    },
+    "scale": 1.0,
+    "confidence": 0.9
+  },
+  {
+    "furniture_name": "TV Stand",
+    "position": {
+      "x": 0.75,
+      "y": 0.75
+    },
+    "rotation": {
+      "azimuth_deg": -90.0,
+      "elevation_deg": 0.0
+    },
+    "scale": 1.0,
+    "confidence": 0.9
+  },
+  {
+    "furniture_name": "Bookcase / jewelry Armoire",
+    "position": {
+      "x": 0.75,
+      "y": 0.25
+    },
+    "rotation": {
+      "azimuth_deg": 0.0,
+      "elevation_deg": 0.0
+    },
+    "scale": 1.0,
+    "confidence": 0.85
+  },
+  {
+    "furniture_name": "Pendant Lamp",
+    "position": {
+      "x": 0.5,
+      "y": 0.5
+    },
+    "rotation": {
+      "azimuth_deg": 0.0,
+      "elevation_deg": -90.0
+    },
+    "scale": 1.0,
+    "confidence": 0.95
+  }
+]

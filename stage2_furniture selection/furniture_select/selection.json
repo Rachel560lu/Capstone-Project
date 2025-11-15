@@ -1,0 +1,52 @@
+[
+  {
+    "model_id":"b8b746a5-bf6e-4679-a702-e783140cc4d8",
+    "super-category":"Sofa",
+    "category":"L-shaped Sofa",
+    "style":"Modern",
+    "price_cny":4660,
+    "xLen":2.087,
+    "zLen":0.961,
+    "footprint_m2":2.005607
+  },
+  {
+    "model_id":"06791438-cfa8-4e29-95cc-4ff8107e3456",
+    "super-category":"Cabinet\/Shelf\/Desk",
+    "category":"Coffee Table",
+    "style":"Modern",
+    "price_cny":200,
+    "xLen":1.08,
+    "zLen":0.174,
+    "footprint_m2":0.18792
+  },
+  {
+    "model_id":"1a4af735-398a-483b-ad94-68baeb0517bd",
+    "super-category":"Cabinet\/Shelf\/Desk",
+    "category":"TV Stand",
+    "style":"Modern",
+    "price_cny":280,
+    "xLen":1.4,
+    "zLen":0.482,
+    "footprint_m2":0.6748
+  },
+  {
+    "model_id":"c4b1e776-0cf2-4db0-b303-5ff29d0be5fa",
+    "super-category":"Cabinet\/Shelf\/Desk",
+    "category":"Bookcase \/ jewelry Armoire",
+    "style":"Modern",
+    "price_cny":1400,
+    "xLen":1.635,
+    "zLen":0.923,
+    "footprint_m2":1.509105
+  },
+  {
+    "model_id":"6289a052-b4a7-417a-b687-b22fddc14663",
+    "super-category":"Light",
+    "category":"Pendant Lamp",
+    "style":"Modern",
+    "price_cny":450,
+    "xLen":1.576,
+    "zLen":1.032,
+    "footprint_m2":1.626432
+  }
+]
