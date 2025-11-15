@@ -1,8 +1,0 @@
-openai>=1.40.0
-matplotlib>=3.7.0
-opencv-python>=4.7.0,<4.12
-numpy<2,>=1.24.0
-# Apple Silicon (arm64) on macOS 使用 onnxruntime-silicon，其它平台使用 onnxruntime
-onnxruntime>=1.16.0,<2; platform_system != "Darwin" or platform_machine != "arm64"
-onnxruntime-silicon>=1.16.0,<2; platform_system == "Darwin" and platform_machine == "arm64"
-rembg>=2.0.56

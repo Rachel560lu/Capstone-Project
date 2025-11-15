@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>房产视觉增强系统</title>
+    <style>
+        /* 基础样式 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(-45deg, #0f2027, #203a43, #2c5364);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        /* 曼陀罗背景装饰 */
+        .mandala {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            opacity: 0.1;
+            pointer-events: none;
+        }
+        
+        .mandala-circle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            animation: rotate 120s linear infinite;
+        }
+        
+        .mandala-circle:nth-child(1) { width: 50vmin; height: 50vmin; }
+        .mandala-circle:nth-child(2) { width: 70vmin; height: 70vmin; animation-duration: 100s; }
+        .mandala-circle:nth-child(3) { width: 90vmin; height: 90vmin; animation-duration: 80s; }
+        .mandala-circle:nth-child(4) { width: 110vmin; height: 110vmin; animation-duration: 60s; }
+        
+        @keyframes rotate {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        /* 布局样式 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        
+        header {
+            text-align: center;
+            padding: 1.5rem 0 1rem;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            letter-spacing: 2px;
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .tagline {
+            font-size: 1.2rem;
+            opacity: 0.8;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* 角色选择页面 */
+        .role-selection {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1.5rem 0 2rem;
+        }
+        
+        .role-btn {
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            border: none;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        
+        .role-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 上传区域 */
+        .upload-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .upload-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .upload-area {
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 3rem 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .upload-area:hover {
+            border-color: rgba(255, 255, 255, 0.5);
+            background: rgba(255, 255, 255, 0.03);
+        }
+        
+        .upload-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: #ff8a00;
+        }
+        
+        .upload-text {
+            margin-bottom: 1rem;
+        }
+        
+        .upload-btn {
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            border: none;
+            color: white;
+            padding: 0.8rem 2rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .upload-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 对比查看器 */
+        .comparison-section {
+            display: none;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .comparison-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .comparison-container-wrapper {
+            position: relative;
+            width: 100%;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            /* 防止图片被选中 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        
+        .comparison-container {
+            position: relative;
+            width: 100%;
+            /* 高度将由JavaScript根据图片比例动态设置 */
+        }
+        
+        .comparison-before, .comparison-after {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            /* 防止图片被选中 */
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+            pointer-events: none;
+        }
+        
+        .comparison-after {
+            clip-path: polygon(0 0, 50% 0, 50% 100%, 0 100%);
+        }
+        
+        .comparison-slider {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 4px;
+            height: 100%;
+            background: white;
+            cursor: ew-resize;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+        
+        .comparison-handle {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 50px;
+            height: 50px;
+            background: white;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .comparison-handle::before,
+        .comparison-handle::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 2px;
+            background: #333;
+        }
+        
+        .comparison-handle::before {
+            transform: translateX(3px);
+        }
+        
+        .comparison-handle::after {
+            transform: translateX(-3px);
+        }
+        
+        /* 功能区域 */
+        .features-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: #ff8a00;
+        }
+        
+        .feature-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-desc {
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        /* 教程区域 */
+        .tutorial-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .tutorial-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .tutorial-steps {
+            counter-reset: step-counter;
+            list-style-type: none;
+        }
+        
+        .tutorial-step {
+            margin-bottom: 1.5rem;
+            padding-left: 3rem;
+            position: relative;
+        }
+        
+        .tutorial-step::before {
+            counter-increment: step-counter;
+            content: counter(step-counter);
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 2rem;
+            height: 2rem;
+            background: linear-gradient(45deg, #ff8a00, #e52e71);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+        
+        /* 新增加载状态样式 */
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ff8a00;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        .loading-text {
+            color: white;
+            margin-top: 20px;
+            font-size: 1.2rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-message {
+            background: rgba(255, 0, 0, 0.1);
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+            text-align: center;
+            display: none;
+        }
+        
+        /* 响应式调整 */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0.8rem;
+            }
+            
+            .logo {
+                font-size: 2rem;
+            }
+            
+            .role-selection {
+                flex-direction: column;
+                align-items: center;
+                gap: 1.2rem;
+            }
+            
+            .role-btn {
+                width: 80%;
+                padding: 1rem 1.5rem;
+            }
+            
+            .features-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 曼陀罗背景 -->
+    <div class="mandala">
+        <div class="mandala-circle"></div>
+        <div class="mandala-circle"></div>
+        <div class="mandala-circle"></div>
+        <div class="mandala-circle"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo">房产视觉增强系统</div>
+            <div class="tagline">AI驱动 · 专业级房产营销素材制作平台</div>
+        </header>
+
+        <!-- 角色选择区域 -->
+        <section class="role-selection">
+            <button class="role-btn" id="sellerBtn">卖房者</button>
+            <button class="role-btn" id="buyerBtn">买房者</button>
+        </section>
+
+        <!-- 上传区域 -->
+        <section class="upload-section" id="uploadSection" style="display: none;">
+            <h2 class="upload-title">上传您的房产照片</h2>
+            <div class="upload-area" id="uploadArea">
+                <div class="upload-icon">📁</div>
+                <p class="upload-text">拖放图片或点击上传</p>
+                <input type="file" id="imageUpload" accept="image/*" style="display: none;">
+                <button class="upload-btn" onclick="document.getElementById('imageUpload').click()">选择图片</button>
+            </div>
+        </section>
+
+        <!-- 错误消息区域 -->
+        <div class="error-message" id="errorMessage"></div>
+
+        <!-- 对比查看器 -->
+        <section class="comparison-section" id="comparisonSection">
+            <h2 class="comparison-title">效果对比</h2>
+            <div class="comparison-container-wrapper">
+                <div class="comparison-container" id="comparisonContainer">
+                    <img class="comparison-before" id="originalImage" src="" alt="原始图片">
+                    <img class="comparison-after" id="processedImage" src="" alt="处理后效果">
+                    <div class="comparison-slider">
+                        <div class="comparison-handle"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 功能区域 -->
+        <section class="features-section">
+            <div class="feature-card">
+                <div class="feature-icon">🖼️</div>
+                <h3 class="feature-title">AI高清放大与去杂</h3>
+                <p class="feature-desc">智能提升图片质量，移除不必要的杂物</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🛋️</div>
+                <h3 class="feature-title">虚拟布置</h3>
+                <p class="feature-desc">为空房间添加精美家具，展示潜在价值</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">📹</div>
+                <h3 class="feature-title">视频防抖</h3>
+                <p class="feature-desc">稳定拍摄视频，提供专业观感</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">🎨</div>
+                <h3 class="feature-title">装修效果预览</h3>
+                <p class="feature-desc">可视化不同装修风格，助力决策</p>
+            </div>
+        </section>
+
+        <!-- 教程区域 -->
+        <section class="tutorial-section">
+            <h2 class="tutorial-title">使用教程</h2>
+            <ol class="tutorial-steps">
+                <li class="tutorial-step">首先，根据您的身份选择"卖房者"或"买房者"按钮</li>
+                <li class="tutorial-step">点击"选择图片"按钮上传您的房产照片</li>
+                <li class="tutorial-step">系统将自动处理您的图片并显示效果对比</li>
+                <li class="tutorial-step">拖动中间的滑块可以查看处理前后的对比效果</li>
+                <li class="tutorial-step">处理后的图片可以保存或分享</li>
+            </ol>
+        </section>
+    </div>
+
+    <!-- 新增加载覆盖层 -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">AI正在处理您的图片，请稍候...</div>
+    </div>
+
+    <script>
+        // 角色选择功能
+        document.getElementById('sellerBtn').addEventListener('click', function() {
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('sellerBtn').style.display = 'none';
+            document.getElementById('buyerBtn').style.display = 'none';
+            document.querySelector('.tagline').textContent = '卖房者模式 · 展示房产最佳状态';
+        });
+
+        document.getElementById('buyerBtn').addEventListener('click', function() {
+            document.getElementById('uploadSection').style.display = 'block';
+            document.getElementById('sellerBtn').style.display = 'none';
+            document.getElementById('buyerBtn').style.display = 'none';
+            document.querySelector('.tagline').textContent = '买房者模式 · 探索房产潜力';
+        });
+
+        // 后端交互功能
+        const API_BASE_URL = 'http://localhost:5000'; // 后端服务地址
+        
+        // 图片上传和显示功能
+        document.getElementById('imageUpload').addEventListener('change', async function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                // 显示加载状态
+                showLoading(true);
+                hideError();
+                
+                try {
+                    // 创建FormData对象
+                    const formData = new FormData();
+                    formData.append('image', file);
+                    
+                    // 发送到后端处理
+                    const response = await fetch(`${API_BASE_URL}/process-image`, {
+                        method: 'POST',
+                        body: formData
+                    });
+                    
+                    const result = await response.json();
+                    
+                    if (result.success) {
+                        // 显示原始图片和处理后的图片
+                        const originalImg = document.getElementById('originalImage');
+                        const processedImg = document.getElementById('processedImage');
+                        
+                        originalImg.src = `${API_BASE_URL}${result.original_url}`;
+                        processedImg.src = `${API_BASE_URL}${result.processed_url}`;
+                        
+                        // 等待图片加载完成后设置容器高度
+                        originalImg.onload = function() {
+                            setComparisonContainerHeight();
+                            
+                            // 显示对比区域
+                            document.getElementById('comparisonSection').style.display = 'block';
+                            
+                            // 初始化对比滑块
+                            initComparisonSlider();
+                        };
+                    } else {
+                        showError(result.error || '处理失败，请重试');
+                    }
+                } catch (error) {
+                    console.error('处理错误:', error);
+                    showError('网络错误，请检查后端服务是否启动');
+                } finally {
+                    // 隐藏加载状态
+                    showLoading(false);
+                }
+            }
+        });
+
+        // 设置对比容器高度
+        function setComparisonContainerHeight() {
+            const originalImg = document.getElementById('originalImage');
+            const comparisonContainer = document.getElementById('comparisonContainer');
+            
+            if (originalImg.naturalHeight && originalImg.naturalWidth) {
+                // 计算图片比例
+                const aspectRatio = originalImg.naturalHeight / originalImg.naturalWidth;
+                const containerWidth = comparisonContainer.offsetWidth;
+                const calculatedHeight = containerWidth * aspectRatio;
+                
+                // 设置容器高度
+                comparisonContainer.style.height = `${calculatedHeight}px`;
+            }
+        }
+
+        // 窗口大小改变时重新设置容器高度
+        window.addEventListener('resize', setComparisonContainerHeight);
+
+        // 拖放上传功能
+        const uploadArea = document.getElementById('uploadArea');
+        uploadArea.addEventListener('dragover', function(e) {
+            e.preventDefault();
+            uploadArea.style.borderColor = '#ff8a00';
+            uploadArea.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+        });
+        
+        uploadArea.addEventListener('dragleave', function() {
+            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            uploadArea.style.backgroundColor = 'transparent';
+        });
+        
+        uploadArea.addEventListener('drop', function(e) {
+            e.preventDefault();
+            uploadArea.style.borderColor = 'rgba(255, 255, 255, 0.3)';
+            uploadArea.style.backgroundColor = 'transparent';
+            
+            const file = e.dataTransfer.files[0];
+            if (file && file.type.startsWith('image/')) {
+                document.getElementById('imageUpload').files = e.dataTransfer.files;
+                const event = new Event('change');
+                document.getElementById('imageUpload').dispatchEvent(event);
+            }
+        });
+
+        // 对比滑块功能
+        function initComparisonSlider() {
+            const slider = document.querySelector('.comparison-slider');
+            const afterImage = document.querySelector('.comparison-after');
+            let isMoving = false;
+
+            slider.addEventListener('mousedown', function(e) {
+                e.preventDefault();
+                isMoving = true;
+            });
+
+            document.addEventListener('mouseup', function() {
+                isMoving = false;
+            });
+
+            document.addEventListener('mousemove', function(e) {
+                if (!isMoving) return;
+                
+                let x = e.pageX;
+                x -= slider.parentNode.getBoundingClientRect().left;
+                slideMove(x);
+            });
+
+            // 触摸设备支持
+            slider.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+                isMoving = true;
+            });
+
+            document.addEventListener('touchend', function() {
+                isMoving = false;
+            });
+
+            document.addEventListener('touchmove', function(e) {
+                if (!isMoving) return;
+                
+                let x;
+                if (e.touches) x = e.touches[0].pageX;
+                x -= slider.parentNode.getBoundingClientRect().left;
+                slideMove(x);
+            });
+
+            function slideMove(x) {
+                let containerWidth = slider.parentNode.offsetWidth;
+                if (x < 0) x = 0;
+                if (x > containerWidth) x = containerWidth;
+                
+                // 更新滑块位置
+                slider.style.left = x + 'px';
+                
+                // 更新处理后图片的显示区域
+                const percentage = (x / containerWidth) * 100;
+                afterImage.style.clipPath = `polygon(0 0, ${percentage}% 0, ${percentage}% 100%, 0 100%)`;
+            }
+        }
+
+        // 加载状态控制
+        function showLoading(show) {
+            const overlay = document.getElementById('loadingOverlay');
+            overlay.style.display = show ? 'flex' : 'none';
+        }
+
+        // 错误消息控制
+        function showError(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
